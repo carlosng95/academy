@@ -1,0 +1,19 @@
+'City: int
+'Day': 0,1
+'Shared Room': 0,1 
+'Private Room': 0,1
+'Person Capacity': 
+'Superhost': 0,1
+'Multiple Rooms': 0,1 
+'Business': 0,1
+'Cleanliness Rating': 
+'Guest Satisfaction': 
+'Bedrooms': 
+'City Center (km)': 
+'Metro Distance (km)': 
+'Attraction Index': 
+'Normalised Attraction Index': 
+'Restraunt Index': 
+'Normalised Restraunt Index: 
+
+modelo_rf.predict([X_train.values[0]])
