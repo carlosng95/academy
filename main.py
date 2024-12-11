@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import pickle
@@ -41,7 +41,7 @@ app.add_middleware(
 
 @app.get('/')
 async def root():
-    return FileResponse("front.html")  # Asegúrate de que front.html esté en la misma carpeta que este archivo
+    return FileResponse("front.html")  
 
 @app.post('/prediction/')
 async def get_predictions(payload: Depto):
