@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicción de Airbnb</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #555;
+            margin-top: 30px;
+        }
+        
+        h3 {
+            text-align: center;
+            color: #555;
+            margin-top: 30px;
+        }
+        #predictionForm {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .form-field {
+            padding: 10px;
+            border: 2px solid #d1d1d1;
+            border-radius: 5px;
+            background-color: #ffffff;
+        }
+
+        .form-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-field input {
+            width: 80%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        button {
+            grid-column: span 4;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #predictionResult {
+            text-align: center;
+            font-size: 18px;
+            color: #007BFF;
+            margin-top: 20px;
+        }
+
+        .spacer {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dicsys Academy</h1>
+    <h2>Predicción de Precios de Airbnb</h2>
+    <h3 class="spacer">Completa los datos para la predicción:</h3>
+    <form id="predictionForm">
+        <div class="form-field">
+            <label for="city">City:</label>
+            <input type="number" id="city" name="city" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="day">Day:</label>
+            <input type="number" id="day" name="day" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="shared_room">Shared Room:</label>
+            <input type="number" id="shared_room" name="shared_room" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="private_room">Private Room:</label>
+            <input type="number" id="private_room" name="private_room" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="person_capacity">Person Capacity:</label>
+            <input type="number" id="person_capacity" name="person_capacity" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="superhost">Superhost:</label>
+            <input type="number" id="superhost" name="superhost" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="multiple_rooms">Multiple Rooms:</label>
+            <input type="number" id="multiple_rooms" name="multiple_rooms" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="business">Business:</label>
+            <input type="number" id="business" name="business" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="cleanliness_rating">Cleanliness Rating:</label>
+            <input type="number" id="cleanliness_rating" name="cleanliness_rating" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="guest_satisfaction">Guest Satisfaction:</label>
+            <input type="number" id="guest_satisfaction" name="guest_satisfaction" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="bedrooms">Bedrooms:</label>
+            <input type="number" id="bedrooms" name="bedrooms" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="city_center_km">City Center (km):</label>
+            <input type="number" id="city_center_km" name="city_center_km" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="metro_distance_km">Metro Distance (km):</label>
+            <input type="number" id="metro_distance_km" name="metro_distance_km" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="attraction_index">Attraction Index:</label>
+            <input type="number" id="attraction_index" name="attraction_index" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="normalised_attraction_index">Normalised Attraction Index:</label>
+            <input type="number" id="normalised_attraction_index" name="normalised_attraction_index" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="restraunt_index">Restaurant Index:</label>
+            <input type="number" id="restraunt_index" name="restraunt_index" step="any" required>
+        </div>
+
+        <div class="form-field">
+            <label for="normalised_restraunt_index">Normalised Restaurant Index:</label>
+            <input type="number" id="normalised_restraunt_index" name="normalised_restraunt_index" step="any" required>
+        </div>
+
+        <button type="submit">Calcular</button>
+    </form>
+
+    <h2>Precio:</h2>
+    <p id="predictionResult">El resultado de la predicción aparecerá aquí.</p>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const payload = Object.fromEntries(formData.entries());
+            for (let key in payload) {
+                payload[key] = parseFloat(payload[key]);
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/prediction/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error en la predicción');
+                }
+
+                const data = await response.json();
+                document.getElementById('predictionResult').textContent = `$ ${data.prediction.toFixed(2)}`;
+            } catch (error) {
+                document.getElementById('predictionResult').textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,8 +1,11 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import pickle
 import warnings
 from mangum import Mangum
+from fastapi.middleware.cors import CORSMiddleware
+
 warnings.filterwarnings('ignore')
 
 class Depto(BaseModel):
@@ -28,9 +31,17 @@ class Depto(BaseModel):
 app = FastAPI()
 handler = Mangum(app)    
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get('/')
 async def root():
-    return {"message": "Bienvenidos a nuestro modelo"}
+    return FileResponse("front.html")  # Asegúrate de que front.html esté en la misma carpeta que este archivo
 
 @app.post('/prediction/')
 async def get_predictions(payload: Depto):
@@ -58,4 +69,3 @@ async def get_predictions(payload: Depto):
         
     prediction = model.predict([values_list])[0][0]
     return {"prediction": prediction}
-    
