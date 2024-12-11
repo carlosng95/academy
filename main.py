@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import pickle
 import warnings
+from mangum import Mangum
 warnings.filterwarnings('ignore')
 
 class Depto(BaseModel):
@@ -22,8 +23,10 @@ class Depto(BaseModel):
     normalised_attraction_index: float
     restraunt_index: float
     normalised_restraunt_index: float
-    
+
+
 app = FastAPI()
+handler = Mangum(app)    
 
 @app.get('/')
 async def root():
@@ -55,8 +58,4 @@ async def get_predictions(payload: Depto):
         
     prediction = model.predict([values_list])[0][0]
     return {"prediction": prediction}
-    
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
     
